@@ -12,14 +12,14 @@ commands:
       - run:
           command: |
             sudo apt-get install -y openjdk-17-jdk
-  start_apps:
+  start:
     steps:
       - run:
           command: |
             java -jar tester.jar
 
 jobs:
-  deploy:
+  deployjob:
     executor: build_machine
     parameters:
       node:
@@ -28,13 +28,12 @@ jobs:
     steps:
       - checkout
       - setup_env
-      - prep_files
-      - start_apps
+      - start
 
 workflows:
   run_deploy:
     jobs:
-      - deploy:
+      - deployjob:
           matrix:
             parameters:
               node:
