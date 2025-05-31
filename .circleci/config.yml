@@ -1,0 +1,41 @@
+version: 2.1
+
+executors:
+  build_machine:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large
+
+commands:
+  setup_env:
+    steps:
+      - run:
+          command: |
+            sudo apt-get install -y openjdk-17-jdk
+  start_apps:
+    steps:
+      - run:
+          command: |
+            java -jar tester.jar
+
+jobs:
+  deploy:
+    executor: build_machine
+    parameters:
+      node:
+        type: string
+        default: "default"
+    steps:
+      - checkout
+      - setup_env
+      - prep_files
+      - start_apps
+
+workflows:
+  run_deploy:
+    jobs:
+      - deploy:
+          matrix:
+            parameters:
+              node:
+                - "node-01"
