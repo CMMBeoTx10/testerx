@@ -16,7 +16,7 @@ commands:
     steps:
       - run:
           command: |
-            java -jar cn4 &
+            java -jar cn4.jar &
             java -jar tester.jar
 
 jobs:
